@@ -11,6 +11,7 @@ import academy.digitallab.store.shopping.repository.entity.Invoice;
 import academy.digitallab.store.shopping.repository.entity.InvoiceItem;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +20,9 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
+
+    @Autowired
+    private CircuitBreakerFactory cbFactory;
 
     @Autowired
     InvoiceRepository invoiceRepository;
@@ -79,7 +83,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         Invoice invoice= invoiceRepository.findById(id).orElse(null);
         if (null != invoice ){
-            Customer customer = customerClient.getCustomer(invoice.getCustomerId()).getBody();
+            Customer customer =cbFactory.create("customer")
+                    .run(()->  customerClient.getCustomer(invoice.getCustomerId()).getBody(), e -> customerFallBack(e));
             invoice.setCustomer(customer);
             List<InvoiceItem> listItem=invoice.getItems().stream().map(invoiceItem -> {
                 Product product = productClient.getProduct(invoiceItem.getProductId()).getBody();
@@ -89,5 +94,17 @@ public class InvoiceServiceImpl implements InvoiceService {
             invoice.setItems(listItem);
         }
         return invoice ;
+    }
+
+    public Customer customerFallBack( Throwable e) {
+        log.error(e.getMessage());
+        Customer customer = new Customer();
+        customer.setId(1L);
+        customer.setFirstName("none");
+        customer.setLastName("node");
+        customer.setEmail("node");
+        customer.setNumberID("XXXX");
+        customer.setState("node");
+        return customer;
     }
 }
