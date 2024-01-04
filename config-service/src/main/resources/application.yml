@@ -1,0 +1,23 @@
+server:
+  port: 8081
+spring:
+  cloud:
+    config:
+      server:
+        git:
+          search-paths: config-data
+          uri: https://github.com/edumar111/microservice-native-youtube.git
+          username: ${GITHUB_USER}
+          password: ${GITHUB_PASSWORD}
+          timeout: 4
+          skipSslValidation: false
+    label: main
+  security:
+    user:
+      name: root
+      password: s3cr3t
+
+logging:
+  level:
+    root: DEBUG
+    org.springframework: INFO
