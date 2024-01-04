@@ -24,3 +24,7 @@ info:
   app:
     name: ${spring.application.name}
     port: ${server.port}
+logging:
+  pattern:
+    #console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+    console: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
