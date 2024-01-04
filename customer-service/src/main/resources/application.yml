@@ -14,3 +14,10 @@ spring:
       label: main
       username: root
       password: s3cr3t
+  info:
+    app:
+      name: ${spring.application.name}
+      port: ${server.port}
+      description: ${application.projectName}
+      version: ${application.projectVersion}
+      host: ${spring.cloud.client.hostname}
