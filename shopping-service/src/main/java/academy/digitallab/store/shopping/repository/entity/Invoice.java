@@ -1,6 +1,7 @@
 package academy.digitallab.store.shopping.repository.entity;
 
 
+import academy.digitallab.store.shopping.model.Customer;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
@@ -32,7 +33,8 @@ public class Invoice {
     @Temporal(TemporalType.DATE)
     private Date createAt;
 
-
+    @Transient
+    private Customer customer;
 
     @Valid
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
