@@ -6,6 +6,7 @@ import academy.digitallab.store.product.repository.entity.Product;
 import academy.digitallab.store.product.service.ProductService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @RequestMapping (value = "/products")
 public class ProductController {
@@ -49,6 +51,8 @@ public class ProductController {
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable("id") Long id) {
+        log.info("Fetching  Product with id {}", id);
+
         Product product =  productService.getProduct(id);
         if (null==product){
             return ResponseEntity.notFound().build();

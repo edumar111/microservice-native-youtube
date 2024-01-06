@@ -14,3 +14,33 @@ spring:
       label: main
       username: root
       password: s3cr3t
+
+management:
+  info:
+    java:
+      enabled: true
+    env:
+      enabled: true
+  metrics:
+    #distribution:
+    #  percentiles-histogram:
+    #    http:
+    #      server:
+    #        requests: true
+    observations:
+      key-values:
+        application: product-service
+    #tracing:
+    #  sampling:
+    #    probability: 1.0
+info:
+  app:
+    name: ${spring.application.name}
+    port: ${server.port}
+logging:
+  pattern:
+    correlation: "[${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+  level:
+    org:
+      springframework:
+        web: INFO

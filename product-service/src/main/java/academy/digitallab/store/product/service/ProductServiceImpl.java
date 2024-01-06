@@ -5,11 +5,13 @@ import academy.digitallab.store.product.repository.ProductRepository;
 import academy.digitallab.store.product.repository.entity.Category;
 import academy.digitallab.store.product.repository.entity.Product;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl  implements ProductService{
@@ -24,6 +26,7 @@ public class ProductServiceImpl  implements ProductService{
 
     @Override
     public Product getProduct(Long id) {
+        log.info("get product id "+ id.toString());
         return productRepository.findById(id).orElse(null);
     }
 

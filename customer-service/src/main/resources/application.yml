@@ -26,5 +26,10 @@ info:
     port: ${server.port}
 logging:
   pattern:
-    #console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
-    console: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+    correlation: "[${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+  level:
+    org:
+      springframework:
+        web: INFO
+
+

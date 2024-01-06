@@ -14,3 +14,17 @@ spring:
       label: main
       username: root
       password: s3cr3t
+management:
+  info:
+    java:
+      enabled: true
+    env:
+      enabled: true
+
+info:
+  app:
+    name: ${spring.application.name}
+    port: ${server.port}
+logging:
+  pattern:
+    correlation: "[${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
