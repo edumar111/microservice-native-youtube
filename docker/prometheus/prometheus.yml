@@ -8,14 +8,17 @@ scrape_configs:
       - targets: ['prometheus:9090']
   - job_name: 'customer-service'
     metrics_path: '/actuator/prometheus'
+    scrape_interval: 5s
     static_configs:
-      - targets: ['host.docker.internal:8092'] ## only for demo purposes don't use host.docker.internal in production
-  - job_name: 'product-detection'
+      - targets: ['customer-service:8092'] ## only for demo purposes don't use host.docker.internal in production
+  - job_name: 'product-service'
+    scrape_interval: 5s
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: ['host.docker.internal:8091'] ## only for demo purposes don't use host.docker.internal in production
-  - job_name: 'shopping-detection'
+      - targets: ['product-service:8091'] ## only for demo purposes don't use host.docker.internal in production
+  - job_name: 'shopping-service'
+    scrape_interval: 5s
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: ['host.docker.internal:8093'] ## only for demo purposes don't use host.docker.internal in production
+      - targets: ['shopping-service:8093'] ## only for demo purposes don't use host.docker.internal in production
 

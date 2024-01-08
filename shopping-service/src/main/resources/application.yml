@@ -6,7 +6,7 @@ spring:
 ---
 spring:
   config:
-    import: optional:configserver:http://localhost:8081
+    import: optional:configserver:http://config-service:8081
     activate:
       on-profile: dev
   cloud:
@@ -20,6 +20,21 @@ management:
       enabled: true
     env:
       enabled: true
+  zipkin:
+    tracing:
+      endpoint: http://tempo-service:9411/api/v2/spans
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
+  tracing:
+    sampling:
+      probability: 1.0
+  observations:
+    key-values:
+      application: shopping-service
 
 info:
   app:

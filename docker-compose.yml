@@ -2,6 +2,7 @@ version: "4"
 services:
   tempo:
     image: grafana/tempo:2.2.2
+    container_name: tempo-service
     command: [ "-config.file=/etc/tempo.yaml" ]
     volumes:
       - ./docker/tempo/tempo.yml:/etc/tempo.yaml:ro
@@ -9,13 +10,16 @@ services:
     ports:
       - "3110:3100"  # Tempo
       - "9411:9411" # zipkin
-
+    networks:
+      - digitallab
   loki:
     image: grafana/loki:main
+    container_name: loki-service
     command: [ "-config.file=/etc/loki/local-config.yaml" ]
     ports:
       - "3100:3100"
-
+    networks:
+      - digitallab
   prometheus:
     image: prom/prometheus:v2.46.0
     command:
@@ -25,7 +29,8 @@ services:
       - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
     ports:
       - "9090:9090"
-
+    networks:
+      - digitallab
   grafana:
     image: grafana/grafana:10.1.0
     volumes:
@@ -36,5 +41,11 @@ services:
       - GF_AUTH_DISABLE_LOGIN_FORM=true
     ports:
       - "3000:3000"
-volumes:
-  mysql-data:
+    networks:
+      - digitallab
+
+networks:
+    digitallab:
+        external: true
+
+# docker network create digitallab

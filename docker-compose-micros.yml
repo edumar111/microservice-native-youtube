@@ -1,0 +1,52 @@
+version: "4"
+services:
+  config:
+    image: edumar111/youtube-ms-config:1.0.0
+    container_name: config-service
+    environment:
+        - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "8081:8081"
+    networks:
+      - digitallab
+  product:
+    image: edumar111/youtube-ms-product:1.0.0
+    container_name: product-service
+    environment:
+        - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+        - "SPRING_PROFILES_ACTIVE=dev"
+    ports:
+      - "8091:8091" 
+    networks:
+      - digitallab
+    depends_on:
+      - config
+  customer:
+    image: edumar111/youtube-ms-customer:1.0.0
+    container_name: customer-service
+    environment:
+        - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+        - "SPRING_PROFILES_ACTIVE=dev"
+    ports:
+      - "8092:8092"  # Tempo
+    networks:
+      - digitallab
+    depends_on:
+      - config
+  shopping:
+    image: edumar111/youtube-ms-shopping:1.0.0
+    container_name: shopping-service
+    environment:
+        - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+        - "SPRING_PROFILES_ACTIVE=dev"
+    ports:
+      - "8093:8093"  # Tempo
+    networks:
+      - digitallab
+    depends_on:
+      - config
+networks:
+    digitallab:
+        external: true
+
+# docker network create digitallab
